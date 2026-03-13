@@ -15,7 +15,6 @@ myenv/pyvenv.cfg
 venv
 myenv/
 */__pycache__/*
-*/__init__.py
 # Ignore script and lib folders
 Scripts/
 Lib/
