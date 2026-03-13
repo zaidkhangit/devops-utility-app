@@ -6,9 +6,6 @@ app = FastAPI(
     version="1.1.0",
     doc_url="/docs"
 )
-@app.get("/")
-def hello():
-    """" this is hello api for testing"""
-    return {"message":"hello,this is teat"}
+
 app.include_router(metrics.router)
 app.include_router(aws.router, prefix = "/aws")

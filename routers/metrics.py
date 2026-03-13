@@ -5,6 +5,7 @@ router = APIRouter()
 
 @router.get("/metric")
 
+
 def get_metrics():
     try:
       metric= get_system_metrics()
