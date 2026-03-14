@@ -2,7 +2,7 @@ name: docker build and push
 on:
   workflow_call:
 jobs:
-  build and push:
+  build_and_push:
     runs-on: ubuntu-latest
     steps:
       - name: checkout code
