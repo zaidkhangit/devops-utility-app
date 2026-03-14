@@ -16,9 +16,12 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python version: ${{ matrix.python-version }}
+
       - name: install dependency
-        uses: pip install -r requirements.txt
+        run: pip install -r requirements.txt
+
       - name: run linter
-        uses: flake8 app.py
+        run: flake8 /app:ap.py
+
       - name: SAST
-        uses: bandit -r app.py
+        run: bandit -r app.py
