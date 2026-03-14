@@ -21,7 +21,7 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: run linter
-        run: flake8 /app:ap.py
+        run: flake8 app/api.py
 
       - name: SAST
-        run: bandit -r app.py
+        run: bandit -r app/api.py
