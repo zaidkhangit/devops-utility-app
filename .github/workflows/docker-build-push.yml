@@ -12,12 +12,12 @@ jobs:
         with:
           username: ${{ vars.DOCKERUSER }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+
       - name: build and push
         uses: docker/build-push-action@v6
         with:
           context: .
           push: true
           tags: |
-              ${{ vars.DOCKERHUB_USER }}/app:latest
-              ${{ vars.DOCKERHUB_USER }}/app:${{ github.sha}}
+             ${{ vars.DOCKERHUB_USER }}/app:${{ github.sha}}
            
