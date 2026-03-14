@@ -3,18 +3,18 @@ on:
   workflow_call:
 jobs:
   scan image:
-  runs-on: ubuntu-latest
-  steps:
-    - name: check code
-      uses: actions/checkout@v4
-    - name: login to dockerhub
-      uses: docker/login-actions@v4
-      with: 
-        username: ${{vers.DOCKERUSER}}
-        password: ${{secrets.DOCKER_PASSWORD}}
-    - name: trivy scan
-      uses: aquasecurity/trivy-action@0.35.0
-      with:
-        image-ref: ${{ vars.DOCKERHUB_USER }}app:${{ github.sha}}
-        severity: 'CRITICAL,HIGH'
-        exit-code: '1'
+    runs-on: ubuntu-latest
+    steps:
+      - name: check code
+        uses: actions/checkout@v4
+      - name: login to dockerhub
+        uses: docker/login-actions@v4
+        with: 
+          username: ${{vers.DOCKERUSER}}
+          password: ${{secrets.DOCKER_PASSWORD}}
+      - name: trivy scan
+        uses: aquasecurity/trivy-action@0.35.0
+        with:
+          image-ref: ${{ vars.DOCKERHUB_USER }}app:${{ github.sha}}
+          severity: 'CRITICAL,HIGH'
+          exit-code: '1'
