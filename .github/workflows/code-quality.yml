@@ -1,0 +1,24 @@
+name: code quality check
+on:
+  workflow_call:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: 
+        python-version: ["3.11","3.12"]
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v4
+      - name: setup python
+        uses: actions/setup-python@v5
+        with:
+          python version: ${{ matrix.python-version }}
+      - name: install dependency
+        uses: pip install -r requirements.txt
+      - name: run linter
+        uses: flake8 app.py
+      - name: SAST
+        uses: bandit -r app.py
