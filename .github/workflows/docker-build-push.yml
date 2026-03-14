@@ -19,5 +19,5 @@ jobs:
           context: .
           push: true
           tags: |
-             ${{ vars.DOCKERHUB_USER }}/app:${{ github.sha}}
+             ${{ vars.DOCKERUSER }}/app:${{ github.sha }}
            
