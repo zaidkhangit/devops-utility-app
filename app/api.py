@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from routers import metrics , aws
+from routers import metrics,aws
 app = FastAPI(
     title="Internal DevOps Utility API", 
     description="this is an Internal API Utility App for Monitoring metrics,AWS usag,logs",
