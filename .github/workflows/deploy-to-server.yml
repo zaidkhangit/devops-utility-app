@@ -1,0 +1,39 @@
+name: deploy to server
+on:
+  workflow_call:
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v4
+      - name: ssh to prod server and create folder
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          username: ${{ vars.SSH_USER }}
+          host: ${{ secrets.SSH_HOST }}
+          key: ${{ secrets.KEY}}
+          scripts: |
+            echo " installing re package $ folder"
+            sudo apt-get update $$ sudo-apt-get install docker.io docker-compose-v2 -y
+            sudo usermod -aG docker $USER 
+            mkdir -p devops
+      - name: copy docker compose file
+        uses: appleboy/scp-action@v1
+        with:
+           username: ${{ vars.SSH_USER }}
+           host: ${{ secrets.SSH_HOST }}
+           key: ${{ secrets.KEY}}
+           source: docker-compose.yml
+           target: ~/devops
+      - name: ssh to prod server and run
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          username: ${{ vars.SSH_USER }}
+          host: ${{ secrets.SSH_HOST }}
+          key: ${{ secrets.KEY}}
+          scripts: |
+            echo " running web"
+            export DOCKERHUB_USER=${{ vars.DOCKERUSER }}
+            export DOCKER_TAG=${{ github.sha }}
+            echo ${{ secrets.}}
