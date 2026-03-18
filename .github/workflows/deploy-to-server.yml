@@ -25,7 +25,7 @@ jobs:
            host: ${{ secrets.SSH_HOST }}
            key: ${{ secrets.KEY}}
            source: docker-compose.yml
-           target: ~/devops
+           target: ~/devopsi
       - name: ssh to prod server and run
         uses: appleboy/ssh-action@v1.0.3
         with:
