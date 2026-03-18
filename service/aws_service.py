@@ -1,7 +1,7 @@
 import boto3
 from datetime import datetime,timezone, timedelta
 def get_bucket():
-    s3_client = boto3.client("s3")
+    s3_client = boto3.client("s3", region_name="ap-south-1")
     response = s3_client.list_buckets()
     buckets = response.get("Buckets", [])
     current_time =  datetime.now(timezone.utc).astimezone()
@@ -33,7 +33,7 @@ def get_bucket():
      
     }
 def get_ec2_instances():
-    ec2_client = boto3.client("ec2")
+    ec2_client = boto3.client("ec2", region_name="ap-south-1")
     response = ec2_client.describe_instances()
     current_time = datetime.now(timezone.utc).astimezone()
 
