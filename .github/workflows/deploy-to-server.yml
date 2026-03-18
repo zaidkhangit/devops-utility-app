@@ -38,4 +38,4 @@ jobs:
             export DOCKERHUB_USER=${{ vars.DOCKERUSER }}
             export DOCKER_TAG=${{ github.sha }}
             echo ${{ secrets.DOCKER_PASSWORD }} | docker login --username ${{ vars.DOCKERUSER }} --password-stdin
-            cd ~/devopsi $$ docker compose down $$ docker compose up -d --build --force-recreate --pull always
+            cd ~/devopsi && docker compose down && docker compose up -d --build --force-recreate --pull always
