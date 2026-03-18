@@ -14,7 +14,7 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           key: ${{ secrets.KEY }}
           script: |
-            echo "Installing Docker and Compose on EC2...
+            echo "Installing Docker and Compose on EC2..."
             sudo apt-get install -y docker.io && sudo apt-get install -y docker-compose-v2
             sudo usermod -aG docker $USER
             mkdir -p ~/devopsi
