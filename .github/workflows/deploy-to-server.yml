@@ -34,7 +34,7 @@ jobs:
           username: ${{ vars.SSH_USER }}
           host: ${{ secrets.SSH_HOST }}
           key: ${{ secrets.KEY}}
-          scripts: |
+          script: |
             echo " running web"
             export DOCKERHUB_USER=${{ vars.DOCKERUSER }}
             export DOCKER_TAG=${{ github.sha }}
