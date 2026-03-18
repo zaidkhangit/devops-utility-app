@@ -7,17 +7,44 @@ jobs:
     steps:
       - name: checkout code
         uses: actions/checkout@v4
-      - name: ssh to prod server and create folder
+      - name: SSH to prod server and install Docker
         uses: appleboy/ssh-action@v1.0.3
         with:
           username: ${{ vars.SSH_USER }}
           host: ${{ secrets.SSH_HOST }}
-          key: ${{ secrets.KEY}}
-          scripts: |
-            echo " installing re package $ folder"
-            sudo apt-get update $$ sudo-apt-get install docker.io docker-compose-v2 -y
-            sudo usermod -aG docker $USER 
-            mkdir -p devops
+          key: ${{ secrets.KEY }}
+          script: |
+            echo "Installing Docker and Compose on EC2..."
+        
+            # Update packages
+            sudo apt-get update -y
+            sudo apt-get install -y ca-certificates curl gnupg lsb-release
+        
+            # Add Docker’s official GPG key
+            sudo mkdir -p /etc/apt/keyrings
+            curl -fsSL https://download.docker.com/linux/ubuntu/gpg | \
+              sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+        
+            # Add Docker repository
+            echo \
+              "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
+              https://download.docker.com/linux/ubuntu \
+              $(lsb_release -cs) stable" | \
+              sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+        
+            # Install Docker Engine + Compose plugin
+            sudo apt-get update -y
+            sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+        
+            # Add user to docker group
+            sudo usermod -aG docker $USER
+        
+            # Create devops folder
+            mkdir -p ~/devops
+        
+            # Verify installation
+            docker --version
+            docker compose version 
       - name: copy docker compose file
         uses: appleboy/scp-action@v1
         with:
