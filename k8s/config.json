@@ -1,7 +1,15 @@
 {
 	"auths":{
 		"https://index.docker.io/v1/":{
+<<<<<<< HEAD
 			"username": "zaidaws",
 			"password": "",
 			"auth": ""
+=======
+			"username": "",
+
+			"password": "",
+			"auth": ""
+
+>>>>>>> cc5a6c6 (added menifest file)
 		}}}
