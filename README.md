@@ -1,50 +1,71 @@
-This repository contains a FastAPI application with a complete DevSecOps pipeline using GitHub Actions, Docker, and AWS EC2. It also includes utilities to monitor AWS resources — specifically S3 buckets and EC2 instances — highlighting stale resources and new creations.
-Project Structure
-- app/ → FastAPI application code
-- routers/ → API route definitions
-- service/ → Business logic and AWS integrations
-- main.py → Entry point for FastAPI
-- Dockerfile → Container build instructions
-- docker-compose.yml → Service orchestration
-- .github/workflows/ → CI/CD pipelines (linting, build, deploy, security scans)
+DevSecOps FastAPI Application
+
+This repository contains a FastAPI-based backend integrated with a complete DevSecOps pipeline using Docker, GitHub Actions, and AWS. It also includes Kubernetes manifests for container orchestration and scaling.
 Features
-- FastAPI backend with modular routers and services
-- Dockerized app with Compose for local and production environments
-- GitHub Actions workflows:
-- docker-build-push.yml → Build & push Docker images
-- deploy-to-server.yml → SSH into EC2 and deploy with Docker Compose
-- image-scan.yml & code-quality.yml → Security and lint checks
-. AWS Monitoring:
-- Fetches all S3 buckets and EC2 instances
-- Flags resources older than 90 days
-- Displays newly created buckets and EC2 instances
-- Secrets & variables managed via GitHub Actions (secrets.*, vars.*)
-- Trivy security scanning for images
-INHERIT CREDENTIALS
-- Inside secrets and variable insert you access key and secret access key in secrets and default region in variables to fetch respective data
-  SETUP
-Local Development
-# Clone repo
+FastAPI backend with modular architecture
+Dockerized application with Docker Compose support
+CI/CD using GitHub Actions:
+Build & push Docker images
+Deploy to AWS EC2 via SSH
+Code quality & security scanning (Trivy)
+AWS Monitoring:
+Lists S3 buckets and EC2 instances
+Flags resources older than 90 days
+Detects newly created resources
+☁️ AWS Integration
+Uses AWS Access Key & Secret Key via GitHub Secrets
+Default region configured via GitHub Variables
+Helps monitor infrastructure health and unused resources
+🐳 Local Development
 git clone https://github.com/your-repo.git
 cd your-repo
 
-# Install dependencies
 pip install -r requirements.txt
-
-# Run locally
 python main.py
 
-# Test with curl
-curl http://localhost:8081
-AWS Resource Monitoring
-The service includes scripts to query AWS and report:
-- Stale resources: Buckets and EC2 instances older than 90 days.
-- New resources: Recently created buckets and EC2 instances.
-This helps track unused infrastructure and spot unexpected creations.
- Verification
-After deployment, test the app on EC2:
-curl http://<ec2-public-ip>:8081
+Test:
 
+curl http://localhost:8081
+☸️ Kubernetes Deployment
+Application is deployed using Kubernetes manifests in k8s/
+Uses NodePort service:
+Internal app runs on port 8081
+Exposed externally via port 30081
+🔌 Access
+Local (port-forward):
+kubectl port-forward service/<service-name> 8081:8081
+External:
+http://<node-ip>:30081
+🔐 Secrets & Configuration
+secrets.yml:
+Store AWS & Docker credentials
+Values must be Base64 encoded (no spaces)
+config-map:
+Stores non-sensitive configuration
+📈 Auto Scaling
+Horizontal Pod Autoscaler (HPA) enabled
+Automatically scales pods when:
+CPU usage ≥ 70%
+🚀 Deployment (EC2)
+
+GitHub Actions workflow:
+
+Builds Docker image
+Pushes to registry
+SSH into EC2
+Deploys using Docker Compose
+
+Verify:
+
+curl http://<ec2-ip>:8081
+🔍 Security
+Trivy scans Docker images for vulnerabilities
+Secrets managed securely via GitHub Actions
+✅ Summary
+
+This project demonstrates a complete DevSecOps workflow:
+
+Development → CI → Security Scan → Deployment → Monitoring → Scaling
 
 
 
