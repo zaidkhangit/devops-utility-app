@@ -15,7 +15,7 @@ Local Development
 
 Clone the repository and install dependencies:
 
-git clone https://github.com/your-repo.git
+git clone https://github.com/zaidkhangit/devops-utility-app.git
 cd your-repo
 pip install -r requirements.txt
 
@@ -34,11 +34,11 @@ The application runs internally on port 8081 and is exposed externally using a N
 
 For local access using port forwarding:
 
-kubectl port-forward service/<service-name> 8081:8081
+kubectl port-forward service/service 8081:8081
 
 For external access:
 
-http://:30081
+http://<instance ip>:30081
 
 Secrets and Configuration
 
