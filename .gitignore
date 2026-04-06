@@ -20,3 +20,4 @@ Scripts/
 Lib/
 Include/
 .git/
+k8s/secrets.yml
