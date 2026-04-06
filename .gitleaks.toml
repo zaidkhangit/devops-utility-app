@@ -1,0 +1,3 @@
+[[allowlist.files]]
+description = "Ignore sealed-secret manifests"
+paths = ["k8s/sealed-secret.yaml"]
