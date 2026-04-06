@@ -1,51 +1,73 @@
-This repository contains a FastAPI application with a complete DevSecOps pipeline using GitHub Actions, Docker, and AWS EC2. It also includes utilities to monitor AWS resources — specifically S3 buckets and EC2 instances — highlighting stale resources and new creations.
-Project Structure
-- app/ → FastAPI application code
-- routers/ → API route definitions
-- service/ → Business logic and AWS integrations
-- main.py → Entry point for FastAPI
-- Dockerfile → Container build instructions
-- docker-compose.yml → Service orchestration
-- .github/workflows/ → CI/CD pipelines (linting, build, deploy, security scans)
-Features
-- FastAPI backend with modular routers and services
-- Dockerized app with Compose for local and production environments
-- GitHub Actions workflows:
-- docker-build-push.yml → Build & push Docker images
-- deploy-to-server.yml → SSH into EC2 and deploy with Docker Compose
-- image-scan.yml & code-quality.yml → Security and lint checks
-. AWS Monitoring:
-- Fetches all S3 buckets and EC2 instances
-- Flags resources older than 90 days
-- Displays newly created buckets and EC2 instances
-- Secrets & variables managed via GitHub Actions (secrets.*, vars.*)
-- Trivy security scanning for images
-INHERIT CREDENTIALS
-- Inside secrets and variable insert you access key and secret access key in secrets and default region in variables to fetch respective data
-  SETUP
-Local Development
-# Clone repo
-git clone https://github.com/your-repo.git
-cd your-repo
+DevSecOps FastAPI Application
 
-# Install dependencies
+This repository contains a FastAPI-based backend integrated with a complete DevSecOps pipeline using Docker, GitHub Actions, and AWS. It also includes Kubernetes manifests for container orchestration and scaling.
+
+Features
+
+FastAPI backend with a modular structure separating routers and services.
+Containerized application using Docker with support for Docker Compose.
+Automated CI/CD pipelines using GitHub Actions for build, deployment, and security checks.
+Integration with AWS services to monitor infrastructure.
+
+The monitoring service fetches S3 buckets and EC2 instances, highlights resources older than 90 days, and detects newly created resources.
+
+Local Development
+
+Clone the repository and install dependencies:
+
+git clone https://github.com/zaidkhangit/devops-utility-app.git
+cd your-repo
 pip install -r requirements.txt
 
-# Run locally
+Run the application:
+
 python main.py
 
-# Test with curl
+Test locally:
+
 curl http://localhost:8081
-AWS Resource Monitoring
-The service includes scripts to query AWS and report:
-- Stale resources: Buckets and EC2 instances older than 90 days.
-- New resources: Recently created buckets and EC2 instances.
-This helps track unused infrastructure and spot unexpected creations.
- Verification
-After deployment, test the app on EC2:
-curl http://<ec2-public-ip>:8081
+Kubernetes Deployment
 
+Kubernetes manifests are available in the k8s directory.
 
+The application runs internally on port 8081 and is exposed externally using a NodePort service on port 30081.
+
+For local access using port forwarding:
+
+kubectl port-forward service/service 8081:8081
+
+For external access:
+
+http://<instance ip>:30081
+
+Secrets and Configuration
+
+Secrets are managed using a secrets configuration file where AWS and Docker credentials must be provided in Base64 encoded format without spaces.
+
+Non-sensitive configuration values are stored using ConfigMap.
+
+Auto Scaling
+
+Horizontal Pod Autoscaler is configured to automatically scale the application when CPU usage reaches or exceeds 70 percent.
+
+Deployment
+
+The CI/CD pipeline performs the following steps:
+
+Builds the Docker image
+Pushes the image to the container registry
+Deploys the application to an EC2 instance using SSH and Docker Compose
+
+After deployment, verify the service:
+
+curl http://<ec2-ip>:8081
+Security
+
+Security scanning is integrated using Trivy for container images. Sensitive credentials are managed using GitHub Secrets and environment variables.
+
+Summary
+
+This project demonstrates a complete DevSecOps workflow including development, continuous integration, security scanning, deployment, infrastructure monitoring, and auto scaling.
 
 
 
