@@ -3,7 +3,7 @@ name: DevSecOps End To End Pipeline
 on: 
     push:
         branches: [main]
-
+    workflow_dispatch: 
 jobs:
     code-quality:
         uses: ./.github/workflows/code-quality.yml
@@ -31,3 +31,6 @@ jobs:
       needs: [trivy]
       uses: ./.github/workflows/deploy-to-server.yml
       secrets: inherit
+    k8s:
+      needs: [deploy]
+      uses: ./.github/workflows/k8s.yml
