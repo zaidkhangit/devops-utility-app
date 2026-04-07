@@ -18,6 +18,16 @@ jobs:
             echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
             sudo apt-get update -y
             sudo apt-get install -y kubectl
+            mkdir -p ~/k8s
+      - name: copy_k8sfile
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ vars.SSH_USER }}
+          key: ${{ secrets.KEY }}
+          source: ./.github/k8s/*
+          target: ~/k8s
+            
       - name: create_cluster
         uses: appleboy/ssh-action@v0.1.10
         with:
